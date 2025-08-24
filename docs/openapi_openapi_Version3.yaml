@@ -1,0 +1,41 @@
+openapi: 3.0.3
+info:
+  title: WMS System API
+  version: 0.1.0
+  description: API para operações do WMS (rascunho inicial)
+servers:
+  - url: https://api.sua-vps.com/v1
+    description: Produção
+  - url: http://localhost:3000/v1
+    description: Desenvolvimento
+paths:
+  /health:
+    get:
+      tags: [Infra]
+      summary: Verifica saúde do serviço
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
+tags:
+  - name: Infra
+    description: Endpoints de infraestrutura
+  - name: Auth
+    description: Autenticação
+  - name: Operação
+    description: Fluxos operacionais
