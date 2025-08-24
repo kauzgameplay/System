@@ -1,7 +1,7 @@
 # FAQ
 
 - Posso operar só com celulares ao invés de RF?
-  - Sim. A interface é responsiva e pode operar como PWA com leitura de códigos via câmera.
+  - Não. O sistema requer dispositivos com leitor de código de barras integrado ou celulares.
 
 - Preciso integrar com ERP/TMS?
   - Não. O sistema é independente. Integrações podem ser adicionadas no futuro como módulos.
@@ -13,4 +13,4 @@
   - Configure Nginx como reverse proxy e use Certbot/Let's Encrypt para os certificados.
 
 - Como imprimir etiquetas?
-  - Via servidor de impressão (ex.: CUPS) ou endpoint que envie ZPL para uma impressora de rede.
+  - Gerar PDFs via o sistema e usar uma impressora compatível com o formato.

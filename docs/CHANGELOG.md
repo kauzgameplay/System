@@ -7,5 +7,5 @@ Formato baseado em Keep a Changelog
   - Esqueleto OpenAPI
   - Guia de deploy em VPS
 
-- v0.1.0 - YYYY-MM-DD
+- v0.1.0 - 2025-08-24
   - Primeira versão (documentação inicial personalizada)

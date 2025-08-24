@@ -11,7 +11,7 @@ Independência
 - O sistema funciona de forma independente (sem dependências ERP/TMS). Integrações futuras poderão ser adicionadas como módulos opcionais.
 
 Termos e definições
-- RF: Dispositivo de coleta com leitura de código de barras.
+- RF: Dispositivo de coleta com leitura de código de barras e QR code.
 - LPN/SSCC: Identificação de unidades logísticas.
 - Slotting: Regras de posicionamento de produtos.
 

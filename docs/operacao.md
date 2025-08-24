@@ -4,8 +4,10 @@ Perfis e permissões
 - Operador, Conferente, Líder, Supervisor, Admin (RBAC)
 
 Fluxos
-- Recebimento: criar > conferir > tratar divergências > put-away
+- Recebimento: criar > gerenciar tarefas > conferir > Gerar UMA (Unidade de Movimentação e Armazenagem)> tratar divergências > put-away
 - Inventário: planejar > contar > auditar > ajustar
+- Reabastecimento: monitorar níveis > gerar tarefa > repor
+- Gerenciar Embarque: criar > separar > conferir > gerar documentos
 - Picking: gerar tarefa > separar > validar
 - Expedição: conferência final > doca > romaneio
 
