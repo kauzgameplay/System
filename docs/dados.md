@@ -107,3 +107,56 @@ export interface CreateProductDTO {
 ```
 
 Se quiser, eu posso gerar a migration do Prisma completa (arquivo .sql / prisma schema) e um seed com exemplos usando exatamente esses campos. Diga se prefere `cm` ou `m` como unidade para dimensões e se o peso deve ser `kg`.
+Unidades escolhidas para documentação: dimensões = cm, peso = kg.
+
+### Dicionário de dados (produto)
+
+| Campo (origem) | Nome técnico | Tipo | Obrigatório | Validação / Formato | Observações |
+|---|---:|---:|---:|---|---|
+| it-codigo | sku | string | Sim | Regex: `^[A-Z0-9\-\._]+$` (case-insensitive) | Código comercial único (referência)
+| desc-item (curto) | name | string | Sim | max 255 chars | Short label para UI/listagens
+| desc-item (longo) | description | text | Não | — | Descrição detalhada
+| un | uomId | uuid (FK) | Sim | deve existir em `uom` | Unidade de medida (ex: EA, KG, M)
+| peso-bruto | grossWeight | decimal (kg) | Não | >= 0 | Armazenar em kg (Decimal(10,3))
+| comprim | length | decimal (cm) | Não | >= 0 | Unidade padronizada: cm
+| altura | height | decimal (cm) | Não | >= 0 | Unidade padronizada: cm
+| largura | width | decimal (cm) | Não | >= 0 | Unidade padronizada: cm
+| fm-cod-com | familyCode / product_family_id | string / uuid (FK) | Não | — | Código ou FK para família do produto
+| DUN | dunGtin | string (digits) | Não | GTIN check-digit (validação EAN/GTIN) | Armazenar apenas dígitos
+| EAN | eanGtin | string (digits) | Não | GTIN check-digit (validação EAN/GTIN) | Armazenar apenas dígitos (caixa/pack)
+
+### Validações e regras
+
+- SKU (it-codigo): aplicar regex `^[A-Z0-9\-\._]+$` e normalizar para uppercase ao salvar. Sem espaços.
+- GTIN/EAN/DUN: remover tudo que não for dígito antes de validar. Validar o dígito verificador (ex: EAN-13 / GTIN-14 algoritmo: soma das posições, multiplicador 1/3, calcular módulo 10). Rejeitar se inválido.
+- Dimensões e peso: aceitar apenas valores numéricos >= 0; armazenar dimensões em cm e peso em kg. Preferir Decimal no banco para evitar erros de ponto flutuante.
+- UOM: referenciar `uom` por `uomId`; no cadastro validar existência e que a UOM esteja ativa/permitida.
+
+### Exemplos de payload (CreateProductDTO)
+
+```json
+{
+	"sku": "ABC-100",
+	"name": "Produto Exemplo A",
+	"description": "Descrição longa do produto",
+	"uomId": "uom-ea",
+	"grossWeight": 0.500,   // kg
+	"length": 10.0,         // cm
+	"height": 5.0,          // cm
+	"width": 2.5,           // cm
+	"familyCode": "FAM-001",
+	"dunGtin": "0123456789012",
+	"eanGtin": "00123456789012"
+}
+```
+
+### Notas de UI / Form
+
+- SKU: campo texto com máscara simples (uppercasing automático), placeholder `EX: ABC-100`.
+- GTIN/EAN/DUN: campo numérico com máscara que aceita 8/12/13/14 dígitos; mostrar validação inline do check-digit.
+- Dimensões: inputs numéricos com unidade `cm` visível ao lado; permitir valores decimais (2-3 casas).
+- Peso: input numérico com unidade `kg` visível; validar >= 0.
+
+### Observações finais
+
+Mantemos UOM e Family como tabelas normalizadas para facilitar traduções e regras comerciais. Para buscas por nome/descrição, avaliar GIN + pg_trgm no Postgres.
